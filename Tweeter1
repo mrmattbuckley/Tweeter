@@ -1,0 +1,26 @@
+#streaming tweets to sense hat
+from sense_hat import SenseHat
+s = SenseHat()
+from twython import TwythonStreamer
+from auth import (
+    consumer_key,
+    consumer_secret,
+    access_token,
+    access_token_secret
+)
+
+class MyStreamer(TwythonStreamer):
+    def on_success(self, data):
+        if 'text' in data:
+            tweet = data['text']
+            s.show_message(tweet)
+
+stream = MyStreamer(
+    consumer_key,
+    consumer_secret,
+    access_token,
+    access_token_secret
+)
+
+#add the words to filter in green speech marks
+stream.statuses.filter(track='{@mancity}, {goal}')
