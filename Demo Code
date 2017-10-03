@@ -1,0 +1,44 @@
+#streaming tweets to sense hat with temperature sense
+from sense_hat import SenseHat
+from time import sleep
+from twython import TwythonStreamer
+from auth import (
+    consumer_key,
+    consumer_secret,
+    access_token,
+    access_token_secret
+)
+
+s = SenseHat()
+red = (255, 0, 0)
+blue = (0, 0, 255)
+
+class MyStreamer(TwythonStreamer):
+    def on_success(self, data):
+        if 'text' in data:
+            tweet = data['text']
+            s.show_message(tweet)
+
+stream = MyStreamer(
+    consumer_key,
+    consumer_secret,
+    access_token,
+    access_token_secret
+)
+
+while True:
+    temp = s.temperature
+    temp_value = temp
+    print(temp)
+
+    pixels = [red if i < temp_value else blue for i in range(64)]
+    
+    s.set_pixels(pixels)
+
+    sleep (3)
+
+#add the words to filter in green speech marks, for both words just
+#seperate with space for one or the other use a comma,
+    stream.statuses.filter(track= 'picademy')
+
+#struggling to link up with temperature reading AFTER picademy tweets.
