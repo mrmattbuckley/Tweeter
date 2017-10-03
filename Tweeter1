@@ -23,4 +23,4 @@ stream = MyStreamer(
 )
 
 #add the words to filter in green speech marks
-stream.statuses.filter(track='{@mancity}, {goal}')
+stream.statuses.filter(track='{}, {}')
